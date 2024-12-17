@@ -3,14 +3,38 @@
  * Shows comprehensive information about the selected puppy, if there is one.
  * Also provides a button for users to remove the selected puppy from the roster.
  */
+
+import { useGetPuppiesQuery, useDeletePuppyMutation } from "./puppySlice";
+import { useState } from "react";
+
 export default function PuppyDetails({ selectedPuppyId, setSelectedPuppyId }) {
   // TODO: Grab data from the `getPuppy` query
 
-  // TODO: Use the `deletePuppy` mutation to remove a puppy when the button is clicked
+  const { data: myData, isSuccess, isLoading } = useGetPuppiesQuery();
 
-  function removePuppy(id) {
-    setSelectedPuppyId();
+  let puppyz = myData?.data.players;
+
+  function singlePuppy() {
+    if (puppyz != undefined) {
+      let puppy = puppyz.find((pup) => pup.id === selectedPuppyId);
+      return puppy;
+    }
   }
+
+  let puppy = singlePuppy();
+
+  const [deleteAPuppy] = useDeletePuppyMutation();
+
+  const removePuppy = async (id) => {
+    try {
+      const response = await deleteAPuppy(id).unwrap();
+      setSelectedPuppyId(puppyz[0].id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // TODO: Use the `deletePuppy` mutation to remove a puppy when the button is clicked
 
   // There are 3 possibilities:
   let $details;
@@ -31,7 +55,7 @@ export default function PuppyDetails({ selectedPuppyId, setSelectedPuppyId }) {
         </h3>
         <p>{puppy.breed}</p>
         <p>Team {puppy.team?.name ?? "Unassigned"}</p>
-        <button onClick={() => removePuppy(puppy.id)}>
+        <button onClick={() => removePuppy(selectedPuppyId)}>
           Remove from roster
         </button>
         <figure>
@@ -39,12 +63,12 @@ export default function PuppyDetails({ selectedPuppyId, setSelectedPuppyId }) {
         </figure>
       </>
     );
-  }
 
-  return (
-    <aside>
-      <h2>Selected Puppy</h2>
-      {$details}
-    </aside>
-  );
+    return (
+      <aside>
+        <h2>Selected Puppy</h2>
+        {$details}
+      </aside>
+    );
+  }
 }
