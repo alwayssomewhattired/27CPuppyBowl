@@ -6,6 +6,7 @@
 
 import { useGetPuppiesQuery, useDeletePuppyMutation } from "./puppySlice";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function PuppyDetails({ selectedPuppyId, setSelectedPuppyId }) {
   // TODO: Grab data from the `getPuppy` query
@@ -66,6 +67,9 @@ export default function PuppyDetails({ selectedPuppyId, setSelectedPuppyId }) {
 
     return (
       <aside>
+        <div>
+          <Link to="/">Click here to go home</Link>
+        </div>
         <h2>Selected Puppy</h2>
         {$details}
       </aside>

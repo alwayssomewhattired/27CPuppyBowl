@@ -9,6 +9,9 @@ import PuppyForm from "./features/puppies/PuppyForm";
 
 import "./App.scss";
 
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Search from "./features/puppies/Search";
+
 /**
  * @component
  * This app shows a list of puppy bowl players from the API.
@@ -21,14 +24,29 @@ export default function App() {
   return (
     <Provider store={store}>
       <h1>Puppy Bowl</h1>
-      <PuppyForm />
-      <main>
-        <PuppyList setSelectedPuppyId={setSelectedPuppyId} />
-        <PuppyDetails
-          selectedPuppyId={selectedPuppyId}
-          setSelectedPuppyId={setSelectedPuppyId}
-        />
-      </main>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/form" element={<PuppyForm />} />
+          {/* <main> */}
+          <Route
+            path="/"
+            element={<PuppyList setSelectedPuppyId={setSelectedPuppyId} />}
+          />
+          <Route
+            path="/details"
+            element={
+              <PuppyDetails
+                selectedPuppyId={selectedPuppyId}
+                setSelectedPuppyId={setSelectedPuppyId}
+              />
+            }
+          />
+          <Route path="/search" element={<Search />}></Route>
+          {/* </main> */}
+        </Routes>
+      </BrowserRouter>
     </Provider>
   );
 }
+
+//make a navbar

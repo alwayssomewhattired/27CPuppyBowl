@@ -6,17 +6,15 @@ import { useState } from "react";
  */
 
 import { useAddPuppyMutation } from "./puppySlice";
+import { Link } from "react-router-dom";
 
 export default function PuppyForm() {
   const [name, setName] = useState("");
   const [breed, setBreed] = useState("");
 
-
   const [createPostMutation, isLoading, error] = useAddPuppyMutation();
 
   // TODO: Use the `addPuppy` mutation to add a puppy when the form is submitted
-
-
 
   const postPuppy = async (e) => {
     e.preventDefault();
@@ -34,6 +32,9 @@ export default function PuppyForm() {
   return (
     <>
       <h2>Add a Puppy</h2>
+      <div>
+        <Link to="/">Click here to go home</Link>
+      </div>
       <form onSubmit={postPuppy}>
         <label>
           Name
